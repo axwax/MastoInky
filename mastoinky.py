@@ -13,6 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from credentials import access_token, api_base_url
 
+# configuration
 post_id = 0
 img_id = 0
 max_post_id = 10
@@ -21,9 +22,7 @@ max_post_id = 10
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PIN_INTERRUPT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-
-
-
+# Initialise Mastodon
 mastodon = Mastodon(
     access_token = str(access_token),
     api_base_url = str(api_base_url)
@@ -35,6 +34,8 @@ inkydev = InkyDev()
 # Set up the Inky Display
 display = inky.Inky((600, 448))
 
+
+# Functions
 def get_wrapped_text(text: str, font: ImageFont.ImageFont,
                      line_length: int):
         lines = ['']
@@ -49,18 +50,13 @@ def get_wrapped_text(text: str, font: ImageFont.ImageFont,
 def find_font_size(the_text, the_font, the_canvas, the_width, the_height):
     for size in range(20, 1, -1):
         fo = the_font.font_variant(size=size)      
-        #print(size)
         wrapped_text = get_wrapped_text(the_text,fo,the_width)
-        #print(wrapped_text)
         l,t,r,b = the_canvas.multiline_textbbox((0,0), wrapped_text, align='center', font = fo)
         w = r - l
         h = b - t
-        #print(w,h)
         if h < the_height:
             break
-    #print("the size",size)    
     return [size, wrapped_text]
-
 
 def crop_center(pil_img, crop_width, crop_height):
     img_width, img_height = pil_img.size
@@ -75,22 +71,16 @@ def crop_max_square(pil_img):
 def show_image(img, caption = '', media_id=''):
     image = Image.open(img)
 
-    #thumb_width = 115
     thumb_width = 137
     im_thumb = crop_max_square(image).resize((thumb_width, thumb_width),  Image.Resampling.LANCZOS)
     
     tv = Image.open("img/tv.png")
-    
-    #caption = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 
-    #newImage = Image.open("img/axbg" + str(media_id) + ".jpg")
     newImage = Image.open("img/axbg" + str(random.randint(0,3)) + ".jpg")
-    #newImage = Image.open("axroom.jpg")
-
-    #newImage.paste(im_thumb, (90,295))   
     newImage.paste(im_thumb, (107,268))   
     newImage.paste(tv, (0, 0),tv)
 
+    # someone forgot to add their ALT text - let's give them a gentle nudge.
     if not caption:
         caption = "Here could be a beautiful ALT description. Maybe next time?"
 
