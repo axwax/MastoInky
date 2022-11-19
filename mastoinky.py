@@ -117,7 +117,15 @@ def show_image(img, caption = '', media_id=''):
 # grab the Mastodon post's image URL and ALT image description then pass them to the show_image() function 
 def show_post_image (post_id = 0, media_id = 0):
     media_url = latest_media_post[post_id].media_attachments[media_id].preview_url
-    media_desc = latest_media_post[post_id].media_attachments[media_id].description
+    media_author = latest_media_post[post_id].account.display_name # or username
+    caption = latest_media_post[post_id].media_attachments[media_id].description
+
+    # someone forgot to add their ALT text - let's give them a gentle nudge.
+    if not caption:
+        caption = "Here could be a beautiful ALT description. Maybe next time?"
+
+    media_desc =  caption + "   wrote " + str(media_author)
+
     show_image(urlopen(media_url), media_desc, media_id)
 
 def handle_interrupt(pin):
