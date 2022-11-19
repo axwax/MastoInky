@@ -18,9 +18,9 @@ post_id = 0
 img_id = 0
 max_posts = 10
 
-thumb_width = 137
-thumb_x = 107
-thumb_y = 268
+thumb_width = 200
+thumb_x = 110
+thumb_y = 125
 
 font_name = 'Robot_Font.otf'
 
@@ -89,11 +89,13 @@ def show_image(img, caption = '', media_id=''):
     newImage = Image.open("img/axbg" + str(random.randint(0,3)) + ".jpg")
 
     # now add the thumbnail as the next layer
-    newImage.paste(im_thumb, (thumb_x, thumb_y))
+    newImage.paste(im_thumb, (thumb_x, thumb_y))    
 
-    # load the transparent TV image and set it as the top layer
-    tv = Image.open("img/tv.png")
-    newImage.paste(tv, (0, 0),tv)
+
+    # load the projector / avatar / speech bubble layer
+    foreground = Image.open("img/axprojector3.png")
+    newImage.paste(foreground, (0, 0),foreground)
+
 
     # draw the assembled image 
     draw = ImageDraw.Draw(newImage)
