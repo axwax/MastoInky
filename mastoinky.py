@@ -22,6 +22,11 @@ thumb_width = 200
 thumb_x = 110
 thumb_y = 125
 
+text_x = 245
+text_y = 77
+text_w = 340
+text_h = 110
+
 font_name = 'Robot_Font.otf'
 
 
@@ -100,17 +105,13 @@ def show_image(img, caption = '', media_id=''):
     # draw the assembled image 
     draw = ImageDraw.Draw(newImage)
 
-    # someone forgot to add their ALT text - let's give them a gentle nudge.
-    if not caption:
-        caption = "Here could be a beautiful ALT description. Maybe next time?"
-
     # load the font and find the largest possible font size for the caption to stay within the speech bubble
     font = ImageFont.FreeTypeFont(font_name)   
-    font_size, wrapped_text = find_font_size(caption, font, draw, 340,110)
+    font_size, wrapped_text = find_font_size(caption, font, draw, text_w, text_h)
     font = ImageFont.FreeTypeFont(font_name, font_size)
 
     #render the text inside the speech bubble
-    draw.multiline_text((185, 77), wrapped_text, font=font, fill=(0, 0, 0), align="center", anchor="mm")
+    draw.multiline_text((text_x, text_y), wrapped_text, font=font, fill=(0, 0, 0), align="center", anchor="mm")
 
     # send the image to the E Ink display
     display.set_image(newImage)
