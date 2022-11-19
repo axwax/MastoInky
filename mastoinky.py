@@ -9,7 +9,7 @@ import inky.inky_uc8159 as inky
 import RPi.GPIO as GPIO
 from inkydev import PIN_INTERRUPT, InkyDev
 from mastodon import Mastodon
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageColor, ImageDraw, ImageFont
 
 from credentials import access_token, api_base_url, account_id
 
@@ -82,6 +82,12 @@ def crop_center(pil_img, crop_width, crop_height):
 def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
+# helper for gradient background by weihanglo https://gist.github.com/weihanglo/1e754ec47fdd683a42fdf6a272904535
+def interpolate(f_co, t_co, interval):
+    det_co =[(t - f) / interval for f , t in zip(f_co, t_co)]
+    for i in range(interval):
+        yield [round(f + det * i) for f, det in zip(f_co, det_co)]    
+
 # load the post's image, create a composite image and display it 
 def show_image(img, caption = '', media_id=''):
 
@@ -95,10 +101,15 @@ def show_image(img, caption = '', media_id=''):
     rectangle = ImageDraw.Draw(newImage)
     
     # fill the background with a random colour
-    bg_color = ImageColor.getrgb("hsl(" + str(random.randint(0,360)) + ", 100%, 50%)")
-    shape = [(0, 0), (600, 448)]
-    rectangle.rectangle(shape, fill = bg_color)
+    #bg_color = ImageColor.getrgb("hsl(" + str(random.randint(0,360)) + ", 100%, 50%)")
+    #shape = [(0, 0), (600, 448)]
+    #rectangle.rectangle(shape, fill = bg_color)
 
+    f_co = (255, 255, 0)
+    t_co = (50, 255, 0)
+    for i, color in enumerate(interpolate(f_co, t_co, 600 * 2)):
+        rectangle.line([(i, 0), (0, i)], tuple(color), width=1)
+    
     # now add the thumbnail as the next layer
     newImage.paste(im_thumb, (thumb_x, thumb_y))    
 
