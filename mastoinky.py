@@ -91,7 +91,13 @@ def show_image(img, caption = '', media_id=''):
     im_thumb = crop_max_square(image).resize((thumb_width, thumb_width),  Image.Resampling.LANCZOS)
     
     # load the background as the bottom layer
-    newImage = Image.open("img/axbg" + str(random.randint(0,3)) + ".jpg")
+    newImage = Image.new("RGB", (600, 448))
+    rectangle = ImageDraw.Draw(newImage)
+    
+    # fill the background with a random colour
+    bg_color = ImageColor.getrgb("hsl(" + str(random.randint(0,360)) + ", 100%, 50%)")
+    shape = [(0, 0), (600, 448)]
+    rectangle.rectangle(shape, fill = bg_color)
 
     # now add the thumbnail as the next layer
     newImage.paste(im_thumb, (thumb_x, thumb_y))    
@@ -141,6 +147,7 @@ def handle_interrupt(pin):
         inkydev.set_led(1, 0, 10 * button_b, 0)
         inkydev.set_led(2, 0, 0, 10 * button_c)
         inkydev.set_led(3, 10 * button_d, 0, 10 * button_d)
+        
         inkydev.update()
         if(button_a):
             if post_id > 0:
