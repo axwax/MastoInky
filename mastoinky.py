@@ -104,20 +104,15 @@ def show_image(img, caption = '', media_id=''):
     # load the background as the bottom layer
     newImage = Image.new("RGB", (600, 448))
     rectangle = ImageDraw.Draw(newImage)
-    
-    # fill the background with a random colour
-    #bg_color = ImageColor.getrgb("hsl(" + str(random.randint(0,360)) + ", 100%, 50%)")
-    #shape = [(0, 0), (600, 448)]
-    #rectangle.rectangle(shape, fill = bg_color)
 
-    f_co = (255, 255, 0)
-    t_co = (50, 255, 0)
+    # create a gradient based on two random colours
+    f_co = ImageColor.getrgb("hsl(" + str(random.randint(0,360)) + ", 100%, 50%)")
+    t_co = ImageColor.getrgb("hsl(" + str(random.randint(0,360)) + ", 100%, 50%)") 
     for i, color in enumerate(interpolate(f_co, t_co, 600 * 2)):
         rectangle.line([(i, 0), (0, i)], tuple(color), width=1)
     
     # now add the thumbnail as the next layer
     newImage.paste(im_thumb, (thumb_x, thumb_y))    
-
 
     # load the projector / avatar / speech bubble layer
     foreground = Image.open("img/axprojector4.png")
@@ -139,7 +134,7 @@ def show_image(img, caption = '', media_id=''):
     display.set_image(newImage)
     display.show()
 
-# grab the Mastodon post's image URL and ALT image description then pass them to the show_image() function 
+# grab the Mastodon post's image URL, ALT image description and author name then pass them to the show_image() function 
 def show_post_image (post_id = 0, media_id = 0):
     media_url = latest_media_post[post_id].media_attachments[media_id].preview_url
     media_author = latest_media_post[post_id].account.display_name # or username
@@ -150,9 +145,9 @@ def show_post_image (post_id = 0, media_id = 0):
         caption = "Here could be a beautiful ALT description. Maybe next time?"
 
     media_desc =  caption + "   wrote " + str(media_author)
-
     show_image(urlopen(media_url), media_desc, media_id)
 
+# handle button presses
 def handle_interrupt(pin):
     global post_id, img_id, max_post_id
     button_a, button_b, button_c, button_d, changed = inkydev.read_buttons()
