@@ -120,7 +120,7 @@ def show_image(img, caption = '', media_id=''):
 
 
     # load the projector / avatar / speech bubble layer
-    foreground = Image.open("img/axprojector3.png")
+    foreground = Image.open("img/axprojector4.png")
     newImage.paste(foreground, (0, 0),foreground)
 
 
