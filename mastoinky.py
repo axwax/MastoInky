@@ -13,6 +13,11 @@ from PIL import Image, ImageColor, ImageDraw, ImageFont
 
 from credentials import access_token, api_base_url, account_id
 
+import sys
+import os
+# change woriking directory to script path
+os.chdir(os.path.dirname(sys.argv[0]))
+
 # configuration
 post_id = 0
 img_id = 0
