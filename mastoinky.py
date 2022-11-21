@@ -8,7 +8,6 @@
 
 import random
 import signal
-import textwrap
 from urllib.request import urlopen
 
 import inky.inky_uc8159 as inky
@@ -21,7 +20,8 @@ from credentials import access_token, api_base_url, account_id
 
 import sys
 import os
-# change woriking directory to script path
+
+# change working directory to script path
 os.chdir(os.path.dirname(sys.argv[0]))
 
 # configuration
