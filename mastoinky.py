@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# MastoInky
+# Display image posts from a Mastodon personal, hashtag or public timeline
+# by AxWax (@axwax@fosstodon.org)
+# Enter your API credentials in credentials_example.py and rename to credentials.py
+# Robot_Font by Fortress Tech at https://www.dafont.com/robot-2.font
+
 import random
 import signal
 import textwrap
@@ -34,6 +40,9 @@ text_y = 77
 text_w = 340
 text_h = 110
 font_name = 'Robot_Font.otf'
+
+# image to be placed in front of other layers - should be placed in img folder
+foreground_img = 'projector.png'
 
 post_id = 0
 img_id = 0
@@ -118,7 +127,7 @@ def show_image(img, caption = '', media_id=''):
     newImage.paste(im_thumb, (thumb_x, thumb_y))    
 
     # load the projector / avatar / speech bubble layer
-    foreground = Image.open("img/axprojector4.png")
+    foreground = Image.open('img/' + foreground_img)
     newImage.paste(foreground, (0, 0),foreground)
 
 
