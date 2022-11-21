@@ -153,38 +153,47 @@ def handle_interrupt(pin):
     button_a, button_b, button_c, button_d, changed = inkydev.read_buttons()
 
     if changed:
-        print(f"Buttons - A: {button_a} B: {button_b} C: {button_c} D: {button_d}")
+        # light up buttons on press
         inkydev.set_led(0, 10 * button_a, 0, 0)
         inkydev.set_led(1, 0, 10 * button_b, 0)
         inkydev.set_led(2, 0, 0, 10 * button_c)
-        inkydev.set_led(3, 10 * button_d, 0, 10 * button_d)
-        
+        inkydev.set_led(3, 10 * button_d, 0, 10 * button_d)        
         inkydev.update()
+        # only continue if a button is pressed
+        if not button_a and not button_b and not button_c and not button_d:
+            return
+
+        # buttons a and b decrease / increase post id
+        # buttons c and d decrease / increase media_id within that post
         if(button_a):
-            if post_id > 0:
-                post_id -= 1
-                img_id = 0
-                show_post_image(post_id,img_id)
+            post_id -= 1
+            img_id = 0
         elif(button_b):
-            if post_id < max_posts - 1:
                 post_id += 1
                 img_id = 0
-                show_post_image(post_id,img_id)
         elif(button_c):
             if img_id > 0:
                 img_id -= 1
-                show_post_image(post_id,img_id)
         elif(button_d):
-            if img_id < len(latest_media_post[post_id].media_attachments) - 1:
-                img_id += 1
-            elif post_id < max_posts - 1:
-                post_id += 1
-                img_id = 0
-            else:
+            img_id += 1
+
+        # is the img_id within limits?
+        if img_id < 0 :
+            post_id -= 1
+            if post_id <0 :
                 post_id = 0
-                img_id = 0
-            show_post_image(post_id,img_id)               
-        print(post_id, img_id)
+            img_id = len(latest_media_post[post_id].media_attachments) - 1
+        elif img_id >= len(latest_media_post[post_id].media_attachments):
+            img_id = 0
+            post_id += 1
+
+        # is the post_id within limits?
+        if post_id < 0 :
+            post_id = max_posts -1
+        if post_id >= max_posts:
+            post_id = 0
+            
+        show_post_image(post_id,img_id)
 GPIO.add_event_detect(PIN_INTERRUPT, GPIO.FALLING, callback=handle_interrupt)
 
 
