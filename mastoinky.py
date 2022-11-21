@@ -148,7 +148,13 @@ def show_post_image (post_id = 0, media_id = 0):
         caption = "Here could be a beautiful ALT description. Maybe next time?"
 
     media_desc =  caption + "   wrote " + str(media_author)
-    show_image(urlopen(media_url), media_desc, media_id)
+    try:
+        the_image = urlopen(media_url)
+        show_image(the_image, media_desc, media_id)
+    except:
+        the_image = 'img/404slide.png'
+        show_image(the_image, media_desc, media_id)
+    
 
 # handle button presses
 def handle_interrupt(pin):
