@@ -215,9 +215,14 @@ def handle_interrupt(pin):
 GPIO.add_event_detect(PIN_INTERRUPT, GPIO.FALLING, callback=handle_interrupt)
 
 
+# load posts with media attachments from a timeline
+# currently only your personal timeline, a hashtag's timeline and the public / federated timeline allow to limit posts to only_media,
+# so to get images from lists or the local timeline you would have to filter out posts without media yourself first...
 
-latest_media_post = mastodon.account_statuses(id = account_id, limit = max_posts, only_media = True) # axwax
-#latest_media_post = mastodon.timeline_public(only_media=True, limit=20) # public timeline
-show_post_image(post_id,0)
+# uncomment the relevant line
+#latest_media_post = mastodon.account_statuses(id = account_id, limit = max_posts, only_media = True) # get images from a personal timeline (change account_id in credentials.py)
+#latest_media_post = mastodon.timeline_public(only_media=True, limit=max_posts) # get images from the public timeline / federated feed
+latest_media_post = mastodon.timeline_hashtag('mastogoats', limit = max_posts, only_media = True) # all posts from a certain hashtag
+show_post_image(post_id, 0)
 
 signal.pause()
