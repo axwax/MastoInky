@@ -19,21 +19,24 @@ import os
 os.chdir(os.path.dirname(sys.argv[0]))
 
 # configuration
-post_id = 0
-img_id = 0
-max_posts = 10
 
+# how many posts should be loaded
+max_posts = 20 
+
+# size and position of the (cropped square) thumbnail
 thumb_width = 200
 thumb_x = 110
 thumb_y = 125
 
+# size, position and font of the text in the speech bubble
 text_x = 245
 text_y = 77
 text_w = 340
 text_h = 110
-
 font_name = 'Robot_Font.otf'
 
+post_id = 0
+img_id = 0
 
 # set up buttons
 GPIO.setmode(GPIO.BCM)
