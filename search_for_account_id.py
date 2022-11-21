@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 
 # search for Mastodon account and return account IDs for each result
-import signal
 from urllib.request import urlopen
-import textwrap
 from mastodon import Mastodon
 from credentials import access_token, api_base_url, account_id
 
 # account to search
-account_to_search = '@axwax@fosstodon.org'
-
+account_to_search = input('Please enter the account to find (eg @axwax@fosstodon.org): ')
 
 # Initialise Mastodon
 mastodon = Mastodon(
