@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # MastoInky
-# Display image posts from a Mastodon personal, hashtag or public timeline
+# Display image posts from a Mastodon personal, hashtag or public timeline on a Raspberry Pi with the Pimoroni Inky Developer E Ink
 # by AxWax (@axwax@fosstodon.org)
 # Enter your API credentials in credentials_example.py and rename to credentials.py
 # Robot_Font by Fortress Tech at https://www.dafont.com/robot-2.font
