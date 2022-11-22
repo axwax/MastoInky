@@ -66,6 +66,8 @@ display = inky.Inky((600, 448))
 
 # Functions
 
+# wrap text even for variable-width fonts
+# by Chris Collett at https://stackoverflow.com/a/67203353
 def get_wrapped_text(text: str, font: ImageFont.ImageFont, line_length: int):
         lines = ['']
         for word in text.split():
@@ -157,6 +159,8 @@ def show_post_image (post_id = 0, media_id = 0):
         caption = "Here could be a beautiful ALT description. Maybe next time?"
 
     media_desc =  caption + "   wrote " + str(media_author)
+
+    # Let's try to load the image - use 404slide as a fallback when an error occurs
     try:
         the_image = urlopen(media_url)
         show_image(the_image, media_desc, media_id)
